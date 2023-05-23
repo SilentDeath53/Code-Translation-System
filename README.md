@@ -4,5 +4,9 @@ This project requires advanced knowledge in multiple programming languages, a de
 
 Due to the time constraints and the complexity and intricacy of the project, I currently do not have sufficient time to dedicate to it. Therefore, I will temporarily set this project as a "ToDo" item. However, I have provided an example C++ code snippet above that demonstrates the conversion of Python code to C++. This can serve as a starting point and provide some insights into the logic for those who are interested in pursuing such a project.
 
+@Update:
+
+- Added a code sample that allows you to convert the Javascript code.
+
 # Created By Silent Death_53
-Free to ask & use.
+Keep in mind that this is a simple infrastructure, it needs more progress to be efficient and smooth. Free to ask & use.
