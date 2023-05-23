@@ -31,8 +31,15 @@ std::string translateJavaScriptToCpp(const std::string& jsCode) {
     // Rule: Replace 'console.log' with 'std::cout <<'
     pos = cppCode.find("console.log");
     while (pos != std::string::npos) {
-        cppCode.replace(pos, 11, "std::cout <<");
-        pos = cppCode.find("console.log", pos + 11);
+        size_t openParenPos = cppCode.find('(', pos);
+        size_t closeParenPos = cppCode.find(')', openParenPos);
+        if (openParenPos == std::string::npos || closeParenPos == std::string::npos)
+            throw std::runtime_error("Invalid print statement syntax");
+
+        std::string message = cppCode.substr(openParenPos + 1, closeParenPos - openParenPos - 1);
+        cppCode.replace(pos, closeParenPos - pos + 1, "std::cout << " + message + " << std::endl;");
+        
+        pos = cppCode.find("console.log", pos + 1);
     }
 
     // Add more translation rules here
