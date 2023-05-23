@@ -11,6 +11,10 @@ Due to the time constraints and the complexity and intricacy of the project, I c
 - I updated the translation of "print" for the py translator and got the bug fix. It can now do a translation that supports comma-separated expressions to output multiple values.
 - It was using parentheses when translating "console.log" for the js translator. I prevented it from using parentheses after the std::cout statement.
 - Added len, range, upper, lower, append, pop, format, join, split, random functions to py file.
+- Added String Length, Array Length, Array Access, String Concatenation, String Comparison, For Loop, While Loop, Arithmetic Operators, Object Creation to js file.
+
+Ps:
+If your terminal/console kills itself while trying the js conversion, delete a few examples from "int main".
 
 # Created By Silent Death_53
 Keep in mind that this is a simple infrastructure, it needs more progress to be efficient and smooth. Free to ask & use.
