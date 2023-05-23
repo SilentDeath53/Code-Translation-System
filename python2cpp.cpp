@@ -27,9 +27,16 @@ std::string translatePythonToCpp(const std::string& pythonCode) {
                 size_t closeParenPos = line.find(')');
                 if (openParenPos == std::string::npos || closeParenPos == std::string::npos)
                     throw std::runtime_error("Invalid print statement syntax");
-                
-                std::string message = line.substr(openParenPos + 1, closeParenPos - openParenPos - 2);
-                cppCode += "std::cout << " + message + " << std::endl;\n";
+
+                std::string message = line.substr(openParenPos + 1, closeParenPos - openParenPos - 1);
+                size_t commaPos = message.find(',');
+                if (commaPos == std::string::npos) {
+                    cppCode += "std::cout << " + message + " << std::endl;\n";
+                } else {
+                    std::string firstPart = message.substr(0, commaPos);
+                    std::string secondPart = message.substr(commaPos + 1);
+                    cppCode += "std::cout << " + firstPart + " << " + secondPart + " << std::endl;\n";
+                }
             }
             // If statement translation
             else if (line.find("if ") != std::string::npos) {
@@ -83,8 +90,6 @@ int main() {
         while x > 0:
             print(x)
             x -= 1
-
-        invalid statement
     )";
 
     std::string cppCode = translatePythonToCpp(pythonCode);
