@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <stdexcept>
+#include <map>
 
 std::string translateJavaScriptToCpp(const std::string& jsCode) {
     std::string cppCode;
@@ -42,7 +42,93 @@ std::string translateJavaScriptToCpp(const std::string& jsCode) {
         pos = cppCode.find("console.log", pos + 1);
     }
 
-    // Add more translation rules here
+    // Rule: String Length
+    pos = cppCode.find(".length");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 7, ".size()");
+        pos = cppCode.find(".length", pos + 7);
+    }
+
+    // Rule: Array Length
+    pos = cppCode.find(".length");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 7, ".size()");
+        pos = cppCode.find(".length", pos + 7);
+    }
+
+    // Rule: Array Access
+    pos = cppCode.find("[");
+    while (pos != std::string::npos) {
+        size_t closingBracketPos = cppCode.find("]", pos + 1);
+        cppCode.replace(pos, closingBracketPos - pos + 1, cppCode.substr(pos, closingBracketPos - pos + 1));
+        pos = cppCode.find("[", pos + 1);
+    }
+
+    // Rule: String Concatenation
+    pos = cppCode.find("+");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 1, " + ");
+        pos = cppCode.find("+", pos + 3);
+    }
+
+    // Rule: String Comparison
+    pos = cppCode.find("===");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 3, "==");
+        pos = cppCode.find("===", pos + 2);
+    }
+
+    // Rule: For Loop
+    pos = cppCode.find("for");
+    while (pos != std::string::npos) {
+        size_t openingParenPos = cppCode.find("(", pos);
+        size_t closingParenPos = cppCode.find(")", openingParenPos);
+        cppCode.replace(openingParenPos, closingParenPos - openingParenPos + 1, cppCode.substr(openingParenPos, closingParenPos - openingParenPos + 1));
+        pos = cppCode.find("for", closingParenPos);
+    }
+
+    // Rule: While Loop
+    pos = cppCode.find("while");
+    while (pos != std::string::npos) {
+        size_t openingParenPos = cppCode.find("(", pos);
+        size_t closingParenPos = cppCode.find(")", openingParenPos);
+        cppCode.replace(openingParenPos, closingParenPos - openingParenPos + 1, cppCode.substr(openingParenPos, closingParenPos - openingParenPos + 1));
+        pos = cppCode.find("while", closingParenPos);
+    }
+
+    // Rule: Arithmetic Operators
+    pos = cppCode.find("+");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 1, " + ");
+        pos = cppCode.find("+", pos + 3);
+    }
+    pos = cppCode.find("-");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 1, " - ");
+        pos = cppCode.find("-", pos + 3);
+    }
+    pos = cppCode.find("*");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 1, " * ");
+        pos = cppCode.find("*", pos + 3);
+    }
+    pos = cppCode.find("/");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 1, " / ");
+        pos = cppCode.find("/", pos + 3);
+    }
+    pos = cppCode.find("%");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 1, " % ");
+        pos = cppCode.find("%", pos + 3);
+    }
+
+    // Rule: Object Creation
+    pos = cppCode.find("{}");
+    while (pos != std::string::npos) {
+        cppCode.replace(pos, 2, "std::map<std::string, int>{}");
+        pos = cppCode.find("{}", pos + 23);
+    }
 
     if (cppCode == jsCode) {
         throw std::runtime_error("Undefined translation rule");
@@ -58,7 +144,21 @@ int main() {
         var z = "Hello";
         console.log(x + y);
         console.error("Error occurred!");
-        invalidStatement; // This is an undefined statement
+        let myList = [1, 2, 3, 4, 5];
+        console.log("Length:", myList.length);
+        console.log("Array Access:", myList[2]);
+        let message = "Hello";
+        let name = "Alice";
+        console.log(message + " " + name);
+        for (let i = 0; i < 10; i++) {
+            console.log("Index:", i);
+        }
+        while (x < 100) {
+            console.log("x:", x);
+            x += 10;
+        }
+        console.log(x / y);
+        let obj = {};
     )";
 
     try {
