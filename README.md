@@ -7,6 +7,7 @@ Due to the time constraints and the complexity and intricacy of the project, I c
 @Update:
 
 - Added a code sample that allows you to convert the Javascript code.
+- I've added as many comments as I can for clarity.
 
 # Created By Silent Death_53
 Keep in mind that this is a simple infrastructure, it needs more progress to be efficient and smooth. Free to ask & use.
