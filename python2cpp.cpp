@@ -6,6 +6,25 @@
 #include <random>
 #include <cctype>
 
+void addRequiredHeaders(std::string& cppCode, const std::string& line) {
+    if (line.find("std::transform(") != std::string::npos) {
+        cppCode += "#include <algorithm>\n";
+    }
+    else if (line.find("std::ostringstream") != std::string::npos) {
+        cppCode += "#include <sstream>\n";
+    }
+    else if (line.find("std::cout") != std::string::npos)
+    {
+        cppCode += "#include <iostream>\n";
+    }
+    else if (line.find("random_device") != std::string::npos ||
+            line.find("mt19937") != std::string::npos ||
+            line.find("uniform_int_distribution") != std::string::npos) {
+        cppCode += "#include <random>\n";
+            }
+}
+
+
 std::string translatePythonToCpp(const std::string& pythonCode) {
     std::string cppCode;
     size_t pos = 0;
@@ -19,6 +38,8 @@ std::string translatePythonToCpp(const std::string& pythonCode) {
         std::string line = pythonCode.substr(pos, end - pos); 
 
         try {
+            addRequiredHeaders(cppCode, line);
+            
             if (line.find(" = ") != std::string::npos) {
                 size_t equalPos = line.find(" = ");
                 std::string variableName = line.substr(0, equalPos);
@@ -109,7 +130,7 @@ std::string translatePythonToCpp(const std::string& pythonCode) {
 
                 std::string container = line.substr(0, dotPos);
                 std::string value = line.substr(openParenPos + 1, closeParenPos - openParenPos - 1);
-                cppCode += container + ".push_back(" + value + ")";
+                cppCode += container + ".push_back(" + value + ");";
             }
             // pop() method translation
             else if (line.find(".pop()") != std::string::npos) {
@@ -163,7 +184,7 @@ std::string translatePythonToCpp(const std::string& pythonCode) {
                 cppCode += "    oss << " + delimiter + ";\n";
                 cppCode += "  oss << " + container + "[i];\n";
                 cppCode += "}\n";
-                cppCode += "std::cout << oss.str();\n";
+                cppCode += "std::cout << oss.str() << std::endl;\n";
             }
             // split() method translation
             else if (line.find(".split()") != std::string::npos) {
