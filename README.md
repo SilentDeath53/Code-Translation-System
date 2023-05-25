@@ -12,7 +12,7 @@ Due to the time constraints and the complexity and intricacy of the project, I c
 - It was using parentheses when translating "console.log" for the js translator. I prevented it from using parentheses after the std::cout statement.
 - Added len, range, upper, lower, append, pop, format, join, split, random functions to py file.
 - Added String Length, Array Length, Array Access, String Concatenation, String Comparison, For Loop, While Loop, Arithmetic Operators, Object Creation to js file.
-- Added a function named 'addRequiredHeaders' that checks each code line and adds the required header files to the C++ code.
+- Added a function named 'addRequiredHeaders' that checks each code line and adds the required header files to the C++ code. (For py2cpp file)
 
 Ps:
 If your terminal/console kills itself while trying the js conversion, delete a few examples from "int main".
