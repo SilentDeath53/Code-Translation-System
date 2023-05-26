@@ -222,6 +222,19 @@ std::string translatePythonToCpp(const std::string& pythonCode) {
                      line.find('%') != std::string::npos) {
                 cppCode += line + "\n";
             }
+            // Logical operator translation
+            else if (line.find(" and ") != std::string::npos) {
+                size_t andPos = line.find(" and ");
+                std::string leftOperand = line.substr(0, andPos);
+                std::string rightOperand = line.substr(andPos + 5);
+                cppCode += "(" + leftOperand + ") && (" + rightOperand + ")";
+            }
+            else if (line.find(" or ") != std::string::npos) {
+                size_t orPos = line.find(" or ");
+                std::string leftOperand = line.substr(0, orPos);
+                std::string rightOperand = line.substr(orPos + 4);
+                cppCode += "(" + leftOperand + ") || (" + rightOperand + ")";
+            }
             // Invalid syntax
             else {
                 throw std::runtime_error("Invalid syntax");
@@ -304,6 +317,9 @@ for word in splittedString:
 import random
 randomNumber = random.randint(1, 10)
 print("Random number:", randomNumber)
+
+# and or operator
+x > 5 and y < 10
 
     )";
 
